@@ -12,8 +12,14 @@ export class RecipeListComponent implements OnInit {
   changeSelectedRecipeWithData = new EventEmitter<Recipe>();
 
   recipes: Recipe[] = [
-    new Recipe("Recipe 1", "Description 1","https://upload.wikimedia.org/wikipedia/commons/1/15/Recipe_logo.jpeg"),
-    new Recipe("Recipe 2", "Description 2","https://upload.wikimedia.org/wikipedia/commons/1/15/Recipe_logo.jpeg"),
+    new Recipe(
+        "Burger", 
+        "A hamburger is a food, typically considered a sandwich",
+        "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/h3qzjekted0xjdpdrbjz"),
+    new Recipe(
+      "Coffee", 
+      "Coffee is a brewed drink prepared from roasted coffee beans",
+      "https://media-cldnry.s-nbcnews.com/image/upload/t_fit-2000w,f_auto,q_auto:best/newscms/2019_33/2203981/171026-better-coffee-boost-se-329p.jpg"),
   ];
 
   constructor() { }
