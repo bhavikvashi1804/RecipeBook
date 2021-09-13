@@ -34,5 +34,8 @@ export class ShoppingEditComponent implements OnInit {
         this.itemAmount.nativeElement.value
       )
     );
+
+    this.itemName.nativeElement.value = "";
+    this.itemAmount.nativeElement.value = "";
   }
 }
