@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Recipe } from '../recipe.model';
+import { RecipeService } from '../recipe.service';
 
 @Component({
   selector: 'app-recipe-list',
@@ -11,20 +12,13 @@ export class RecipeListComponent implements OnInit {
   @Output()
   changeSelectedRecipeWithData = new EventEmitter<Recipe>();
 
-  recipes: Recipe[] = [
-    new Recipe(
-        "Burger", 
-        "A hamburger is a food, typically considered a sandwich",
-        "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/h3qzjekted0xjdpdrbjz"),
-    new Recipe(
-      "Coffee", 
-      "Coffee is a brewed drink prepared from roasted coffee beans",
-      "https://media-cldnry.s-nbcnews.com/image/upload/t_fit-2000w,f_auto,q_auto:best/newscms/2019_33/2203981/171026-better-coffee-boost-se-329p.jpg"),
-  ];
+  recipes!: Recipe[];
+  
 
-  constructor() { }
+  constructor(private recipeService: RecipeService) { }
 
   ngOnInit(): void {
+    this.recipes = this.recipeService.getRecipes();
   }
 
   changeSelectedRecipe(recipeItem: Recipe){
