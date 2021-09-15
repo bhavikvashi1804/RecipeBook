@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Recipe } from './recipe.model';
 
 
@@ -16,6 +16,9 @@ export class RecipeService {
       "Coffee is a brewed drink prepared from roasted coffee beans",
       "https://media-cldnry.s-nbcnews.com/image/upload/t_fit-2000w,f_auto,q_auto:best/newscms/2019_33/2203981/171026-better-coffee-boost-se-329p.jpg"),
   ];
+
+  // Event Emitter of selectedRecipe
+  selectedRecipe = new EventEmitter<Recipe>();
 
   constructor() { }
 
