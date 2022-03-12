@@ -22,11 +22,11 @@ export class ShoppingListService {
 
   addNewIngredientToList(ingredient: Ingredient): void {
     this.ingredients.push(ingredient);
-    this.ingredientsChanged.emit(this.ingredients);
+    this.ingredientsChanged.emit(this.ingredients.slice());
   }
 
   addIngredientsToList(ingredients: Ingredient[]){
     this.ingredients.push(...ingredients);
-    //this.ingredientsChanged.emit(this.ingredients);
+    this.ingredientsChanged.emit(this.ingredients.slice());
   }
 }
