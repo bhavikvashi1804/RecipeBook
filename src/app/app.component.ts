@@ -6,11 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'RecipeBook';
-  selectedPage = 'recipe';
-
-  changePage(pageName: string){
-    //console.log(pageName);
-    this.selectedPage = pageName;
-  }
+ 
+ 
 }
