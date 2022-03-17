@@ -60,7 +60,12 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   }
   */
 
+  check(){
+    console.log(this.shoppingForm);
+  }
+
   saveDetails() {
+
     let ingredient = new Ingredient(
       this.shoppingForm.value.name,
       this.shoppingForm.value.amount
