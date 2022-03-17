@@ -25,11 +25,11 @@ export class RecipeService {
   selectedRecipe = new Subject<Recipe>();
 
   // Subject of List Of Recipe
-  recipeChanges  = new Subject<Recipe[]>();
+  recipeChanges = new Subject<Recipe[]>();
 
   constructor() {}
 
-  getRecipes(){
+  getRecipes() {
     //to return only copy not reference
     //so using this recipe method, in app we can't delete or add the items
     return this.recipes.slice();
@@ -41,7 +41,7 @@ export class RecipeService {
   }
 
   updateRecipe(recipe: Recipe) {
-    console.log("Update the recipe");
+    console.log('Update the recipe');
     let selectedRecipe = this.recipes.find((ele) => ele.id == recipe.id);
 
     selectedRecipe!.name = recipe.name;
@@ -52,10 +52,16 @@ export class RecipeService {
   }
 
   addNewRecipe(recipe: Recipe) {
-    console.log("Add New Recipe");
+    console.log('Add New Recipe');
     let lastId = this.recipes[this.recipes.length - 1].id;
     recipe.id = lastId + 1;
     this.recipes.push(recipe);
+    this.recipeChanges.next(this.recipes.slice());
+  }
+
+  deleteRecipeById(id: number) {
+    let selectedRecipe = this.recipes.find((ele) => ele.id == id);
+    this.recipes = this.recipes.filter((ele) => ele.id != id);
     this.recipeChanges.next(this.recipes.slice());
   }
 }

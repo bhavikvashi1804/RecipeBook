@@ -24,7 +24,7 @@
           <li>
             <a (click)="addIngredientsToShoppingList()" style="cursor: pointer;">To Shopping List</a>
             <a style="cursor: pointer;" [routerLink]="['edit']">Edit Recipe</a>
-            <a style="cursor: pointer;">Delete Recipe</a>
+            <a style="cursor: pointer;" (click)="onRecipeDelete()">Delete Recipe</a>
           </li>
         </ul>
       </div>
