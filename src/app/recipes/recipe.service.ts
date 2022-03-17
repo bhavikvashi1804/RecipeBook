@@ -25,7 +25,7 @@ export class RecipeService {
   selectedRecipe = new Subject<Recipe>();
 
   // Subject of List Of Recipe
-  recipesSubject  = new Subject<Recipe[]>();
+  recipeChanges  = new Subject<Recipe[]>();
 
   constructor() {}
 
@@ -48,8 +48,7 @@ export class RecipeService {
     selectedRecipe!.imagePath = recipe.imagePath;
     selectedRecipe!.description = recipe.description;
     selectedRecipe!.ingredients = recipe.ingredients;
-
-    console.log(this.recipes);
+    this.recipeChanges.next(this.recipes.slice());
   }
 
   addNewRecipe(recipe: Recipe) {
@@ -57,6 +56,6 @@ export class RecipeService {
     let lastId = this.recipes[this.recipes.length - 1].id;
     recipe.id = lastId + 1;
     this.recipes.push(recipe);
-
+    this.recipeChanges.next(this.recipes.slice());
   }
 }
