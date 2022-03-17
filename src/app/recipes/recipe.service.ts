@@ -24,15 +24,39 @@ export class RecipeService {
   // Event Emitter of selectedRecipe
   selectedRecipe = new Subject<Recipe>();
 
+  // Subject of List Of Recipe
+  recipesSubject  = new Subject<Recipe[]>();
+
   constructor() {}
 
-  getRecipes(): Recipe[] {
+  getRecipes(){
     //to return only copy not reference
     //so using this recipe method, in app we can't delete or add the items
     return this.recipes.slice();
+    //this.recipesSubject.next(this.recipes.slice());
   }
 
-  getRecipeById(id: number): Recipe{
-    return this.recipes.find( ele => ele.id == id)!;
+  getRecipeById(id: number): Recipe {
+    return this.recipes.find((ele) => ele.id == id)!;
+  }
+
+  updateRecipe(recipe: Recipe) {
+    console.log("Update the recipe");
+    let selectedRecipe = this.recipes.find((ele) => ele.id == recipe.id);
+
+    selectedRecipe!.name = recipe.name;
+    selectedRecipe!.imagePath = recipe.imagePath;
+    selectedRecipe!.description = recipe.description;
+    selectedRecipe!.ingredients = recipe.ingredients;
+
+    console.log(this.recipes);
+  }
+
+  addNewRecipe(recipe: Recipe) {
+    console.log("Add New Recipe");
+    let lastId = this.recipes[this.recipes.length - 1].id;
+    recipe.id = lastId + 1;
+    this.recipes.push(recipe);
+
   }
 }

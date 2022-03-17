@@ -48,8 +48,11 @@ export class RecipeEditComponent implements OnInit {
         for (let ingredient of recipe.ingredients) {
           recipeIngredients.push(
             new FormGroup({
-              name: new FormControl(ingredient.name),
-              amount: new FormControl(ingredient.amount),
+              name: new FormControl(ingredient.name, Validators.required),
+              amount: new FormControl(ingredient.amount, [
+                Validators.required,
+                Validators.pattern(/^[1-9]+[0-9]*$/),
+              ]),
             })
           );
         }
@@ -69,19 +72,48 @@ export class RecipeEditComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.recipeForm);
+    //console.log(this.recipeForm);
+    let submittedRecipe: Recipe = new Recipe(
+      this.editMode ? this.id : 0,
+      this.recipeForm.value.name,
+      this.recipeForm.value.description,
+      this.recipeForm.value.imagePath,
+      this.recipeForm.value.ingredients
+    );
+
+    if (this.editMode) {
+      this.recipeService.updateRecipe(submittedRecipe);
+    } else {
+      this.recipeService.addNewRecipe(submittedRecipe);
+    }
   }
 
   addNewIngredientControl() {
     (<FormArray>this.recipeForm.get('ingredients')).push(
       new FormGroup({
-        name: new FormControl(''),
-        amount: new FormControl(''),
+        name: new FormControl('', Validators.required),
+        amount: new FormControl('', [
+          Validators.required,
+          Validators.pattern(/^[1-9]+[0-9]*$/),
+        ]),
       })
     );
   }
 
-  onDeleteIngredientControl(index: number){
+  onDeleteIngredientControl(index: number) {
     (<FormArray>this.recipeForm.get('ingredients')).removeAt(index);
+  }
+
+  getName() {
+    this.recipeForm.get('name');
+  }
+  getDesc() {
+    this.recipeForm.get('description');
+  }
+  getImagePath() {
+    this.recipeForm.get('imagePath');
+  }
+  getIngredients() {
+    this.recipeForm.get('ingredients');
   }
 }
