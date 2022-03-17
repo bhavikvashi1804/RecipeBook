@@ -1,5 +1,12 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { Ingredient } from 'src/app/shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list.service';
 
@@ -8,13 +15,36 @@ import { ShoppingListService } from '../shopping-list.service';
   templateUrl: './shopping-edit.component.html',
   styleUrls: ['./shopping-edit.component.css'],
 })
-export class ShoppingEditComponent implements OnInit {
+export class ShoppingEditComponent implements OnInit, OnDestroy {
   @ViewChild('shoppingForm ')
   shoppingForm!: NgForm;
 
+  selectedIngredient!: Ingredient;
+  subscription!: Subscription;
+  editMode = false;
+  editItemIndex!: number;
+
   constructor(private shoppingListService: ShoppingListService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.subscription = this.shoppingListService.startedEditing.subscribe(
+      (id: number) => {
+        this.selectedIngredient =
+          this.shoppingListService.getIngredientByIndex(id);
+
+        this.editMode = true;
+        this.editItemIndex = id;
+        this.shoppingForm.form.setValue({
+          name: this.selectedIngredient.name,
+          amount: this.selectedIngredient.amount,
+        });
+      }
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 
   /*
   onAddItem() {
@@ -36,13 +66,22 @@ export class ShoppingEditComponent implements OnInit {
       this.shoppingForm.value.amount
     );
 
-    console.log(ingredient);
-    this.shoppingListService.addNewIngredientToList(ingredient);
+    //console.log(ingredient);
+    if (this.editMode) {
+      this.shoppingListService.updateIngredientByIndex(
+        ingredient,
+        this.editItemIndex
+      );
+    } else {
+      this.shoppingListService.addNewIngredientToList(ingredient);
+    }
 
     this.shoppingForm.reset();
+    this.editMode = false;
   }
 
-  resetShoppingForm(){
+  resetShoppingForm() {
     this.shoppingForm.reset();
+    this.editMode = false;
   }
 }

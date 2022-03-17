@@ -13,6 +13,7 @@ export class ShoppingListService {
   ];
 
   ingredientsChanged = new Subject<Ingredient[]>();
+  startedEditing = new Subject<number>();
 
   constructor() {}
 
@@ -28,6 +29,15 @@ export class ShoppingListService {
 
   addIngredientsToList(ingredients: Ingredient[]){
     this.ingredients.push(...ingredients);
+    this.ingredientsChanged.next(this.ingredients.slice());
+  }
+
+  getIngredientByIndex(index: number): Ingredient{
+    return this.ingredients[index];
+  }
+
+  updateIngredientByIndex(ingredient: Ingredient, index: number): void{
+    this.ingredients[index] = ingredient;
     this.ingredientsChanged.next(this.ingredients.slice());
   }
 }
