@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
+import { Ingredient } from 'src/app/shared/ingredient.model';
 import { Recipe } from '../recipe.model';
 import { RecipeService } from '../recipe.service';
 
@@ -12,6 +14,7 @@ export class RecipeEditComponent implements OnInit {
   id!: number;
   editMode = false;
   loadedRecipe!: Recipe;
+  recipeForm!: FormGroup;
 
   constructor(
     private activateRoute: ActivatedRoute,
@@ -25,9 +28,35 @@ export class RecipeEditComponent implements OnInit {
       this.editMode = params['id'] != null;
       //console.log(this.editMode);
 
-      if (this.editMode) {
-        this.loadedRecipe = this.recipeService.getRecipeById(this.id);
-      }
+      this.initForm();
     });
+
+    
+  }
+
+  private initForm() {
+    let recipeName = '';
+    let recipeDesc = '';
+    let recipeImage = '';
+    let ingredients: Ingredient[] = [];
+
+    if (this.editMode) {
+      let recipe: Recipe = this.recipeService.getRecipeById(this.id);
+      recipeName = recipe.name;
+      recipeDesc = recipe.description;
+      recipeImage = recipe.imagePath;
+      ingredients = recipe.ingredients;
+    }
+
+    this.recipeForm = new FormGroup({
+      name: new FormControl(recipeName, Validators.required),
+      description: new FormControl(recipeDesc, Validators.required),
+      imagePath: new FormControl(recipeImage, Validators.required),
+    });
+  }
+
+
+  onSubmit(): void {
+    console.log(this.recipeForm);
   }
 }
