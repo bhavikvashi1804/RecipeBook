@@ -9,7 +9,7 @@ export class ShoppingListService {
   
   private ingredients: Ingredient[] = [
     new Ingredient('Apple', 5),
-    new Ingredient('Banan', 2),
+    new Ingredient('Banana', 2),
   ];
 
   ingredientsChanged = new Subject<Ingredient[]>();
@@ -38,6 +38,11 @@ export class ShoppingListService {
 
   updateIngredientByIndex(ingredient: Ingredient, index: number): void{
     this.ingredients[index] = ingredient;
+    this.ingredientsChanged.next(this.ingredients.slice());
+  }
+
+  deleteIngredientByIndex(index: number): void{
+    this.ingredients.splice(index,1);
     this.ingredientsChanged.next(this.ingredients.slice());
   }
 }

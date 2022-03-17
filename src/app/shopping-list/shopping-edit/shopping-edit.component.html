@@ -23,7 +23,7 @@
                     <button class="btn btn-success" style="margin-right: 5px;" type="submit"
                         [disabled]="shoppingForm.invalid"><span *ngIf="editMode">Update</span>
                         <span *ngIf="!editMode">Save</span></button>
-                    <button class="btn btn-danger" style="margin-right: 5px;" type="button" [disabled]="!editMode">Delete</button>
+                    <button class="btn btn-danger" style="margin-right: 5px;" type="button" [disabled]="!editMode" (click)="onDeleteItem()">Delete</button>
                     <button class="btn btn-primary" style="margin-right: 5px;" type="button"
                         (click)="resetShoppingForm()">Clear</button>
                 </div>
