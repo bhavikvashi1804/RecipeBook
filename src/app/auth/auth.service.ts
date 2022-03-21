@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject, throwError } from 'rxjs';
+import { BehaviorSubject, Subject, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { User } from './user.model';
 
@@ -19,7 +19,7 @@ export interface AuthResponseData {
 })
 export class AuthService {
   //user Data's Subject
-  user = new Subject<User>();
+  user = new BehaviorSubject<User>(new User('', '', '', new Date()));
 
   private signUpURL: string =
     'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyABPCvj4aHK5hG-H2Mv1WH8Gp7fIkM1a-A';
