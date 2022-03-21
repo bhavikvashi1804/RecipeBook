@@ -6,9 +6,10 @@
 <hr>
 <div class="row">
     <div class="col-xs-12">
-        <app-recipe-item 
-            *ngFor="let oneRecipe of recipes" 
-            [recipeItem]="oneRecipe">
+        <div *ngIf="recipes.length == 0">
+            No Recipes Found.
+        </div>
+        <app-recipe-item *ngFor="let oneRecipe of recipes" [recipeItem]="oneRecipe">
         </app-recipe-item>
     </div>
 </div>
