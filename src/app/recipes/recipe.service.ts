@@ -64,4 +64,9 @@ export class RecipeService {
     this.recipes = this.recipes.filter((ele) => ele.id != id);
     this.recipeChanges.next(this.recipes.slice());
   }
+
+  setTheFetchedRecipes(recipeArray: Recipe[]) {
+    this.recipes = recipeArray;
+    this.recipeChanges.next(this.recipes.slice());
+  }
 }
