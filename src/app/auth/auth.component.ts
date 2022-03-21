@@ -9,6 +9,8 @@ import { AuthService } from './auth.service';
 })
 export class AuthComponent implements OnInit {
   isLoginMode = true;
+  isLoading = false;
+  error: string = '';
 
   @ViewChild('authForm')
   authForm!: NgForm;
@@ -26,14 +28,21 @@ export class AuthComponent implements OnInit {
     let email = this.authForm.value.email;
     let password = this.authForm.value.password;
 
+    this.isLoading = true;
     if (this.isLoginMode) {
     } else {
-      this.authService.signUp(email,password).subscribe(
-        (data)=>{
+      this.authService.signUp(email, password).subscribe(
+        (data) => {
           console.log(data);
+          this.isLoading = false;
         },
-        (error)=>{
-          console.log(error);
+        (errorRes) => {
+          //console.log(errorRes);
+          switch (errorRes.error.error.message) {
+            case 'EMAIL_EXISTS':
+              this.error = 'This email exists already';
+          }
+          this.isLoading = false;
         }
       );
     }
