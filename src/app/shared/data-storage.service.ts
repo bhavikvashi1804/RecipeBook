@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map } from 'rxjs/operators';
 
 import { Recipe } from '../recipes/recipe.model';
 import { RecipeService } from '../recipes/recipe.service';
@@ -47,6 +48,26 @@ export class DataStorageService {
         (error) => {
           console.log(error);
         }
+      );
+  }
+
+  getRecipesData() {
+    return this.http
+      .get<Recipe[]>(
+        'https://angular-learn-70c92-default-rtdb.firebaseio.com/data.json'
+      )
+      .pipe(
+        map((data: { [key: string]: any }) => {
+          let recipes: Recipe[] = data['recipes'];
+          // add ingredients if Ingredients were not present
+          recipes = recipes.map((ele) => {
+            return {
+              ...ele,
+              ingredients: ele.ingredients ? ele.ingredients : [],
+            };
+          });
+          return recipes;
+        })
       );
   }
 }
