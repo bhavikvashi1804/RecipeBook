@@ -4,7 +4,7 @@ import { Recipe } from './recipe.model';
 
 export class RecipeService {
   //list of recipes
-  private recipes: Recipe[] = [
+  /*private recipes: Recipe[] = [
     new Recipe(
       1,
       'Burger',
@@ -20,7 +20,8 @@ export class RecipeService {
       [new Ingredient('Base', 10), new Ingredient('Cheese', 5)]
     ),
   ];
-
+  */
+  private recipes: Recipe[] = [];
   // Event Emitter of selectedRecipe
   selectedRecipe = new Subject<Recipe>();
 
