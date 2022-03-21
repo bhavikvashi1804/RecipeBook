@@ -1,5 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject, Subject, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { User } from './user.model';
@@ -27,7 +28,7 @@ export class AuthService {
   private loginURL: string =
     'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyABPCvj4aHK5hG-H2Mv1WH8Gp7fIkM1a-A';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   signUp(email: string, password: string) {
     return this.http
@@ -67,6 +68,11 @@ export class AuthService {
           );
         })
       );
+  }
+
+  logOut() {
+    this.user.next(new User('', '', '', new Date()));
+    this.router.navigate(['/auth']);
   }
 
   private handleAuth(
