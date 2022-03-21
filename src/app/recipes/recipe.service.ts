@@ -67,10 +67,10 @@ export class RecipeService {
   }
 
   setTheFetchedRecipes(recipeArray: Recipe[]) {
-    console.log('Recipes Loaded: ');
-    console.log(recipeArray);
+    //console.log('Recipes Loaded: ');
+    //console.log(recipeArray);
     this.recipes = recipeArray;
-    console.log(typeof this.recipes);
+    //console.log(typeof this.recipes);
     this.recipeChanges.next(this.recipes.slice());
   }
 }
