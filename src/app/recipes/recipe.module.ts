@@ -9,6 +9,7 @@ import { AppRoutingModule } from '../app-routing.module';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RecipesRoutingModule } from './recipe-routing.module';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -21,10 +22,10 @@ import { RecipesRoutingModule } from './recipe-routing.module';
   ],
   imports: [
     AppRoutingModule,
-    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     RecipesRoutingModule,
+    SharedModule,
   ],
   // we have removed the exports because, we are loading via RecipesRoutingModule
 })
