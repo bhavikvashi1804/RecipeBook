@@ -13,6 +13,7 @@ import { AuthIntercetorService } from './auth/auth-interceptor.service';
 import { RecipeModule } from './recipes/recipe.module';
 import { ShoppingListModule } from './shopping-list/shopping-list.module';
 import { SharedModule } from './shared/shared.module';
+import { CoreModule } from './core.module';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, AuthComponent],
@@ -25,15 +26,7 @@ import { SharedModule } from './shared/shared.module';
     RecipeModule,
     ShoppingListModule,
     SharedModule,
-  ],
-  providers: [
-    RecipeService,
-    DataStorageService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthIntercetorService,
-      multi: true,
-    },
+    CoreModule,
   ],
   bootstrap: [AppComponent],
 })
