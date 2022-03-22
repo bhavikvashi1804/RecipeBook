@@ -25,6 +25,10 @@ export class AuthComponent implements OnInit {
     this.isLoginMode = !this.isLoginMode;
   }
 
+  onClose() {
+    this.error = '';
+  }
+
   onSubmit() {
     //console.log(this.authForm.value.email);
     let email = this.authForm.value.email;
