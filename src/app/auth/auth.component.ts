@@ -1,7 +1,15 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ComponentFactoryResolver,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { AlertComponent } from '../shared/alert/alert.component';
+import { PlaceholderDirective } from '../shared/placeholder.directive';
 import { AuthResponseData, AuthService } from './auth.service';
 
 @Component({
@@ -9,7 +17,7 @@ import { AuthResponseData, AuthService } from './auth.service';
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css'],
 })
-export class AuthComponent implements OnInit {
+export class AuthComponent implements OnInit, OnDestroy {
   isLoginMode = true;
   isLoading = false;
   error: string = '';
@@ -17,7 +25,16 @@ export class AuthComponent implements OnInit {
   @ViewChild('authForm')
   authForm!: NgForm;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  @ViewChild(PlaceholderDirective)
+  placeHolder!: PlaceholderDirective;
+
+  subscription!: Subscription;
+
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private componentFactoryResolver: ComponentFactoryResolver
+  ) {}
 
   ngOnInit(): void {}
 
@@ -49,10 +66,34 @@ export class AuthComponent implements OnInit {
       },
       (errorRes) => {
         this.error = errorRes;
+        this.showAlertDialog(errorRes);
         this.isLoading = false;
       }
     );
 
     this.authForm.reset();
+  }
+
+  private showAlertDialog(errorMsg: string) {
+    //const alertCmp = new AlertComponent();
+    const alertCmpFactory =
+      this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
+    const hostViewContainerRef = this.placeHolder.viewContainerRef;
+
+    //clear older rendered befored data
+    hostViewContainerRef.clear();
+
+    // create a new component
+    const componentRef = hostViewContainerRef.createComponent(alertCmpFactory);
+    componentRef.instance.message = errorMsg;
+    this.subscription = componentRef.instance.close.subscribe(() => {
+      this.subscription.unsubscribe();
+      hostViewContainerRef.clear();
+      this.error = '';
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }
