@@ -32,26 +32,26 @@ export const shoppingListReducer = createReducer(
       ingredients: [...state.ingredients, ...ingredients],
     };
   }),
-  on(ShoppingListAction.updateIngredient, (state, { index, ingredient }) => {
-    const selectedIngredient = state.ingredients[index];
+  on(ShoppingListAction.updateIngredient, (state, { ingredient }) => {
+    const selectedIngredient = state.ingredients[state.editedIngredientIndex];
     const updatedIngredient = {
       ...selectedIngredient, // we have copied old one because, if Ingredient contains ID then we will just change it values
       ...ingredient,
     };
 
     const updatedIngredients = [...state.ingredients];
-    updatedIngredients[index] = updatedIngredient;
+    updatedIngredients[state.editedIngredientIndex] = updatedIngredient;
 
     return {
       ...state,
       ingredients: updatedIngredients,
     };
   }),
-  on(ShoppingListAction.deleteIngredient, (state, { index }) => {
+  on(ShoppingListAction.deleteIngredient, (state) => {
     return {
       ...state,
       ingredients: state.ingredients.filter(
-        (ele, eleIndex) => eleIndex !== index
+        (ele, eleIndex) => eleIndex !== state.editedIngredientIndex
       ),
     };
   }),
