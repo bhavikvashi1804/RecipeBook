@@ -20,3 +20,10 @@ export const updateIngredient = createAction(
   '[Shopping List] Update Ingredient',
   props<{ index: number; ingredient: Ingredient }>()
 );
+
+export const startEdit = createAction(
+  '[Shopping List] Start Edit',
+  props<{ index: number }>()
+);
+
+export const stopEdit = createAction('[Shopping List] Stop Edit');

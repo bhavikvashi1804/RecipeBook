@@ -4,6 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Ingredient } from '../shared/ingredient.model';
 import { ShoppingListService } from './shopping-list.service';
 import * as ShoppoingListReducer from './store/shopping-list.reducer';
+import * as ShoppingListActions from './store/shopping-list.actions';
 
 @Component({
   selector: 'app-shopping-list',
@@ -27,5 +28,6 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
 
   onEditItem(id: number) {
     //this.store.select('shoppingList');
+    this.store.dispatch(ShoppingListActions.startEdit({ index: id }));
   }
 }

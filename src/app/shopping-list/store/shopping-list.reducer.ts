@@ -54,5 +54,19 @@ export const shoppingListReducer = createReducer(
         (ele, eleIndex) => eleIndex !== index
       ),
     };
+  }),
+  on(ShoppingListAction.startEdit, (state, { index }) => {
+    return {
+      ...state,
+      editedIngredientIndex: index,
+      editedIngredient: state.ingredients[index],
+    };
+  }),
+  on(ShoppingListAction.stopEdit, (state) => {
+    return {
+      ...state,
+      editedIngredientIndex: -1,
+      editedIngredient: null,
+    };
   })
 );
