@@ -28,13 +28,12 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   editItemIndex!: number;
 
   constructor(
-    private shoppingListService: ShoppingListService,
     private store: Store<ShoppoingListReducer.ShoppingListAppState>
   ) {}
 
   ngOnInit(): void {
     this.subscription = this.store.select('shoppingList').subscribe((state) => {
-      if (state.editedIngredientIndex != -1) {
+      if (state.editedIngredientIndex > -1) {
         this.editItemIndex = state.editedIngredientIndex;
         this.selectedIngredient = state.editedIngredient;
 
