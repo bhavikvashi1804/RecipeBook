@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 import { Ingredient } from 'src/app/shared/ingredient.model';
 import * as ShoppingListAction from '../store/shopping-list.actions';
 import * as ShoppoingListReducer from '../store/shopping-list.reducer';
+import * as AppReducers from '../../store/app.reducer';
 
 @Component({
   selector: 'app-shopping-edit',
@@ -26,9 +27,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   editMode = false;
   editItemIndex!: number;
 
-  constructor(
-    private store: Store<ShoppoingListReducer.ShoppingListAppState>
-  ) {}
+  constructor(private store: Store<AppReducers.AppState>) {}
 
   ngOnInit(): void {
     this.subscription = this.store.select('shoppingList').subscribe((state) => {
