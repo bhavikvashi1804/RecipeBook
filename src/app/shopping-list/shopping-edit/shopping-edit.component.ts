@@ -33,7 +33,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.store.select('shoppingList').subscribe((state) => {
+    this.subscription = this.store.select('shoppingList').subscribe((state) => {
       if (state.editedIngredientIndex != -1) {
         this.editItemIndex = state.editedIngredientIndex;
         this.selectedIngredient = state.editedIngredient;
@@ -49,6 +49,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.subscription) this.subscription.unsubscribe();
+    this.store.dispatch(ShoppingListAction.stopEdit());
   }
 
   /*
@@ -97,6 +98,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     this.store.dispatch(
       ShoppingListAction.deleteIngredient({ index: this.editItemIndex })
     );
+    this.store.dispatch(ShoppingListAction.stopEdit());
     this.resetShoppingForm();
   }
 
