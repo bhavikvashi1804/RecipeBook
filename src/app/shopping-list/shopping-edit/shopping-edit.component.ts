@@ -9,7 +9,6 @@ import { NgForm } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { Ingredient } from 'src/app/shared/ingredient.model';
-import { ShoppingListService } from '../shopping-list.service';
 import * as ShoppingListAction from '../store/shopping-list.actions';
 import * as ShoppoingListReducer from '../store/shopping-list.reducer';
 
