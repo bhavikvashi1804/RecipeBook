@@ -24,7 +24,7 @@ export interface AuthResponseData {
 })
 export class AuthService {
   //user Data's Subject
-  user = new BehaviorSubject<User>(new User('', '', '', new Date()));
+  //user = new BehaviorSubject<User>(new User('', '', '', new Date()));
 
   private tokenExpTimer: any;
 

@@ -5,9 +5,11 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { DataStorageService } from '../shared/data-storage.service';
+import { AppState } from '../store/app.reducer';
 
 @Component({
   selector: 'app-header',
@@ -22,12 +24,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     private storageService: DataStorageService,
-    private authService: AuthService
+    private authService: AuthService,
+    private store: Store<AppState>
   ) {}
 
   ngOnInit(): void {
-    this.subscription = this.authService.user.subscribe((user) => {
-      if (user.email == '') {
+    this.store.select('auth').subscribe((authState) => {
+      if (authState.user == null) {
         this.isAuthenticated = false;
       } else {
         this.isAuthenticated = true;
