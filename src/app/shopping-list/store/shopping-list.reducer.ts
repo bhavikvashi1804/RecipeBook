@@ -13,5 +13,11 @@ export const shoppingListReducer = createReducer(
       ...state,
       ingredients: [...state.ingredients, ingredient],
     };
+  }),
+  on(ShoppingListAction.addIngredients, (state, { ingredients }) => {
+    return {
+      ...state,
+      ingredients: [...state.ingredients, ...ingredients],
+    };
   })
 );
