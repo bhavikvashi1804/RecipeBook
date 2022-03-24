@@ -8,7 +8,7 @@ import {
 } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, take, tap } from 'rxjs/operators';
 import { AppState } from '../store/app.reducer';
 import { AuthService } from './auth.service';
 
@@ -30,6 +30,8 @@ export class AuthGuard implements CanActivate {
     | boolean
     | UrlTree {
     return this.store.select('auth').pipe(
+      take(1),
+      map((authState) => authState.user),
       map((user) => {
         if (user === null) {
           console.log('Redirect to Auth');
