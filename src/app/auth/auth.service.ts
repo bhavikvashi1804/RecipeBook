@@ -1,9 +1,12 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { BehaviorSubject, Subject, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { AppState } from '../store/app.reducer';
+import { login, logout } from './store/auth.actions';
 import { User } from './user.model';
 
 export interface AuthResponseData {
@@ -33,7 +36,11 @@ export class AuthService {
     'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' +
     environment.firebaseKey;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private store: Store<AppState>
+  ) {}
 
   signUp(email: string, password: string) {
     return this.http
@@ -76,7 +83,8 @@ export class AuthService {
   }
 
   logOut() {
-    this.user.next(new User('', '', '', new Date()));
+    //this.user.next(new User('', '', '', new Date()));
+    this.store.dispatch(logout());
     localStorage.removeItem('userData');
     this.router.navigate(['/auth']);
 
@@ -96,7 +104,16 @@ export class AuthService {
     let expiresInMilliSeconds = expiresIn * 1000;
     const expDate = new Date(new Date().getTime() + expiresInMilliSeconds);
     let user = new User(email, localId, token, expDate);
-    this.user.next(user);
+    //this.user.next(user);
+    // dispatch your action
+    this.store.dispatch(
+      login({
+        email: email,
+        userId: localId,
+        token: token,
+        expirationDate: expDate,
+      })
+    );
 
     localStorage.setItem('userData', JSON.stringify(user));
     // do AutoLogout
@@ -122,8 +139,17 @@ export class AuthService {
       );
 
       if (loadedUser.token) {
-        this.user.next(loadedUser);
+        //this.user.next(loadedUser);
         // do AutoLogout
+        //dispatch Action.
+        this.store.dispatch(
+          login({
+            email: loadedUser.email,
+            userId: loadedUser.id,
+            token: loadedUser.token,
+            expirationDate: new Date(userData._tokenExpirationDate),
+          })
+        );
 
         let leftTime =
           new Date(userData._tokenExpirationDate).getTime() -
